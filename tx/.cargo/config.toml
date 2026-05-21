@@ -1,0 +1,19 @@
+[alias]
+# Run with println logging (default)
+esp32s3 = "run --release --features=esp32s3 --target=xtensa-esp32s3-none-elf"
+# Build without flashing
+esp32s3-build = "build --release --features=esp32s3 --target=xtensa-esp32s3-none-elf"
+
+[target.'cfg(target_arch = \"xtensa\")']
+runner = "espflash flash --monitor"
+rustflags = [
+  "-C", "link-arg=-Wl,-Tlinkall.x",
+  "-C", "link-arg=-nostartfiles",
+]
+
+[env]
+ESP_LOG = "INFO"
+MONITOR_BAUD = "115200"
+
+[unstable]
+build-std = ["alloc","core"]
